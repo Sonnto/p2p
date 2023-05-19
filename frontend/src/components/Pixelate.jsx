@@ -1,37 +1,56 @@
-import React from "react";
-import { fabric } from "fabric";
+import React, { useState } from "react";
 
-function Pixelate() {
+const Pixelate = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      const image = new Image();
-      image.onload = () => {
-        const canvas = new fabric.Canvas("canvas");
-
-        const fabricImage = new fabric.Image(image);
-        canvas.add(fabricImage);
-
-        // Perform pixelation logic on the fabricImage object here
-        // You can use the fabric.js API to manipulate the image
-
-        canvas.renderAll();
-      };
-
-      image.src = e.target.result;
+      setSelectedImage(e.target.result);
     };
 
     reader.readAsDataURL(file);
   };
 
+  const handlePixelate = () => {
+    if (!selectedImage) return;
+
+    fetch("/api/convert", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ selectedImage, pixelSize: 10 }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response data if needed
+        console.log(data);
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+      });
+  };
+
   return (
     <div>
-      <h1>The Pixelation magic component will happen here</h1>
+      {/* Image upload UI */}
       <input type="file" onChange={handleImageUpload} />
+
+      {/* Image preview */}
+      {selectedImage && (
+        <img src={selectedImage} alt="Preview" width={500} height={500} />
+      )}
+
+      {/* Pixelate button */}
+      <button onClick={handlePixelate} className="button text-white">
+        Pixelate!
+      </button>
     </div>
   );
-}
+};
 
 export default Pixelate;
