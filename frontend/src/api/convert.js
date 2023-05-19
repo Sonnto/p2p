@@ -1,4 +1,6 @@
-export const pixelateImage = (selectedImage, pixelSize) => {};
+export const pixelateImage = (selectedImage, pixelSize) => {
+  //pixelate logic here
+};
 
 module.exports = {
   pixelateImage,
