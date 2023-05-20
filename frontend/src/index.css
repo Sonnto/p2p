@@ -5,6 +5,6 @@
 /* custom global classes */
 @layer components {
   .button {
-    @apply p-2 text-xs md:text-sm bg-gradient-to-b from-orange-200 to-orange-400 border border-orange-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-orange-500 active:from-orange-500 rounded-xl;
+    @apply p-2 text-xs md:text-sm bg-gradient-to-b from-orange-200 to-orange-400 border border-orange-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 active:from-orange-500;
   }
 }
