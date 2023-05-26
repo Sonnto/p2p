@@ -1,10 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
+import { pixelateImage } from "../api/convert";
 
 const Pixelate = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
+  const [pixelSize, setPixelSize] = useState(10); // Default pixel size
+  const [pixelatedImage, setPixelatedImage] = useState(null); // Store the pixelated image data
   const imageRef = useRef(null);
-  const frameSize = 500; // Adjust the frame size as needed
+  const frameSize = 300; // Adjust the frame size as needed
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -17,103 +19,59 @@ const Pixelate = () => {
     reader.readAsDataURL(file);
   };
 
-  const handlePixelate = () => {
+  const handlePixelate = async () => {
     if (!selectedImage) return;
 
-    // Calculate the cropping dimensions based on the drag position
-    const cropX = Math.max(0, -dragPosition.x);
-    const cropY = Math.max(0, -dragPosition.y);
-    const cropSize = Math.min(
-      frameSize,
-      imageRef.current.width - cropX,
-      imageRef.current.height - cropY
-    );
+    try {
+      const resizedImage = resizeImage();
+      const pixelatedImage = await pixelateImage(resizedImage, pixelSize);
 
-    // Crop the selected image based on the calculated dimensions
-    const croppedImage = cropImage(selectedImage, cropX, cropY, cropSize);
-
-    // Proceed with sending the cropped image to the backend API for pixelation
-    fetch("/api/convert", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ selectedImage: croppedImage, pixelSize: 10 }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the response data if needed
-        console.log(data);
-      })
-      .catch((error) => {
-        // Handle the error
-        console.error(error);
-      });
+      setPixelatedImage(pixelatedImage);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleDragStart = (event) => {
-    event.dataTransfer.setData("text/plain", ""); // Required for drag operation to work properly
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
-  };
-
-  const handleDrag = (event) => {
-    const { movementX, movementY } = event;
-    setDragPosition((prevPosition) => ({
-      x: prevPosition.x + movementX,
-      y: prevPosition.y + movementY,
-    }));
-  };
-
-  const cropImage = (imageSrc, x, y, size) => {
+  const resizeImage = () => {
     const canvas = document.createElement("canvas");
-    canvas.width = size;
-    canvas.height = size;
+    canvas.width = frameSize;
+    canvas.height = frameSize;
 
     const context = canvas.getContext("2d");
-    context.drawImage(imageRef.current, x, y, size, size, 0, 0, size, size);
+    context.drawImage(imageRef.current, 0, 0, frameSize, frameSize);
 
     return canvas.toDataURL("image/jpeg");
   };
-
-  useEffect(() => {
-    setDragPosition({ x: 0, y: 0 });
-  }, [selectedImage]);
 
   return (
     <div>
       {/* Image upload UI */}
       <input type="file" onChange={handleImageUpload} />
 
-      {/* Image preview with drag functionality */}
+      {/* Image preview */}
       {selectedImage && (
-        <div
-          className="image-preview"
-          draggable
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDrag={handleDrag}
-          style={{
-            width: frameSize,
-            height: frameSize,
-            overflow: "hidden",
-            border: "1px solid black",
-          }}
-        >
+        <div className="image-preview">
           <img
             ref={imageRef}
             src={selectedImage}
-            alt="Preview"
+            alt="pixelate"
             width={frameSize}
             height={frameSize}
-            style={{
-              transform: `translate(${dragPosition.x}px, ${dragPosition.y}px)`,
-            }}
           />
         </div>
       )}
+
+      {/* Pixel size selection */}
+      <div>
+        <label htmlFor="pixelSize">Pixels per brick:</label>
+        <input
+          type="number"
+          id="pixelSize"
+          value={pixelSize}
+          onChange={(e) => setPixelSize(Number(e.target.value))}
+          min={1}
+        />
+      </div>
 
       {/* Pixelate button */}
       <button
@@ -122,6 +80,14 @@ const Pixelate = () => {
       >
         Pixelate!
       </button>
+
+      {/* Display the pixelated image */}
+      {pixelatedImage && (
+        <div>
+          <h3>Pixelated Image:</h3>
+          <img src={pixelatedImage} alt="pixelated" />
+        </div>
+      )}
     </div>
   );
 };
