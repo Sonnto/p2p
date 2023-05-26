@@ -1,31 +1,31 @@
 const pixelateImage = async (imageDataUrl, blockSize) => {
   return new Promise((resolve, reject) => {
-    const image = new Image();
+    const image = new Image(); // Create a new HTML image element
 
     image.onload = () => {
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
+      const canvas = document.createElement("canvas"); // Create a canvas element
+      const context = canvas.getContext("2d"); // Get the 2D rendering context of the canvas
 
-      const { width, height } = image;
-      const numBlocksX = Math.ceil(width / blockSize);
-      const numBlocksY = Math.ceil(height / blockSize);
-      const pixelatedWidth = numBlocksX * blockSize;
-      const pixelatedHeight = numBlocksY * blockSize;
+      const { width, height } = image; // Get the width and height of the image
+      const numBlocksX = Math.ceil(width / blockSize); // Calculate the number of blocks in the X direction
+      const numBlocksY = Math.ceil(height / blockSize); // Calculate the number of blocks in the Y direction
+      const pixelatedWidth = numBlocksX * blockSize; // Calculate the width of the pixelated image
+      const pixelatedHeight = numBlocksY * blockSize; // Calculate the height of the pixelated image
 
-      canvas.width = pixelatedWidth;
-      canvas.height = pixelatedHeight;
+      canvas.width = pixelatedWidth; // Set the canvas width
+      canvas.height = pixelatedHeight; // Set the canvas height
 
-      context.drawImage(image, 0, 0, pixelatedWidth, pixelatedHeight);
+      context.drawImage(image, 0, 0, pixelatedWidth, pixelatedHeight); // Draw the image onto the canvas
 
       const imageData = context.getImageData(
         0,
         0,
         pixelatedWidth,
         pixelatedHeight
-      );
-      const data = imageData.data;
+      ); // Get the pixel data of the canvas
+      const data = imageData.data; // Get the pixel data array
 
-      const blockColors = {}; // Object to store block colors and their counts, will have to figure out how to use with Colours API
+      const blockColors = {}; // Object to store block colors and their counts
 
       for (let y = 0; y < numBlocksY; y++) {
         for (let x = 0; x < numBlocksX; x++) {
@@ -86,9 +86,9 @@ const pixelateImage = async (imageDataUrl, blockSize) => {
         }
       }
 
-      context.putImageData(imageData, 0, 0);
+      context.putImageData(imageData, 0, 0); // Put the modified pixel data back onto the canvas
 
-      const pixelatedPhotoData = canvas.toDataURL("image/jpeg");
+      const pixelatedPhotoData = canvas.toDataURL("image/jpeg"); // Convert the pixelated image to data URL
 
       // Log the results for each block color
       console.log("Block colors:");
@@ -104,14 +104,14 @@ const pixelateImage = async (imageDataUrl, blockSize) => {
       );
       console.log(`Total amount of blocks required: ${totalBlocks}`);
 
-      resolve(pixelatedPhotoData);
+      resolve(pixelatedPhotoData); // Resolve the promise with the pixelated image data URL
     };
 
     image.onerror = () => {
       reject(new Error("Failed to load image."));
     };
 
-    image.src = imageDataUrl;
+    image.src = imageDataUrl; // Set the image source to the provided data URL
   });
 };
 
