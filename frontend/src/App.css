@@ -1,3 +1,232 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Press+Start+2P&family=VT323&display=swap");
+
+/* *** CONTENTS 
+
+* 1. GENERAL STYLES
+* 2. HEADER
+* 3. HERO
+* 4. MAIN - Upload
+* 5. MAIN - Download
+* 6. FOOTER
+
+*/
+
+/* 1. GENERAL STYLES */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: transparent;
+  text-decoration: none;
+  transition: all 0.3s linear;
+}
+html {
+  box-sizing: border-box;
+  height: 100%;
+  background-color: var(--white);
+  scroll-behavior: smooth;
+}
+
+h1,
+h2,
+a {
+  font-family: "Press Start 2P", sans-serif;
+}
+
+h3,
+h4,
+h5,
+h6,
+p {
+  font-family: "Montserrat", sans-serif;
+}
+
+:root {
+  --pixel-red: #eb062c;
+  --pixel-orange: #eb741d;
+  --pixel-grey: #333;
+  --offgrey: #ebebeb;
+  --pixel-blue: #1e92fd;
+  --size-xxl: 72px;
+  --size-xl: 48px;
+  --size-l: 40px;
+  --size-m: 30px;
+  --size-s: 27px;
+  --size-xs: 24px;
+  --size-xxs: 18px;
+}
+
+/* 2. HEADER  */
+
+#header {
+  padding: 42px 50px;
+  display: flex;
+  align-items: center;
+}
+
+#site-name {
+  flex-grow: 1;
+}
+
+#site-name a {
+  color: var(--pixel-red);
+  font-size: var(--size-m);
+}
+
+#navbar {
+  display: inline-block;
+}
+
+.nav-item a {
+  color: var(--pixel-red);
+  font-size: var(--size-s);
+  font-family: "VT323", monospace;
+}
+
+.nav-item {
+  list-style: none;
+  margin-right: 50px;
+  display: inline-block;
+}
+
+.nav-item a:link,
+.nav-item a:visited {
+  color: var(--pixel-red);
+}
+.nav-item a:hover,
+.nav-item a:active {
+  color: var(--pixel-orange);
+}
+
+/* 3. HERO */
+#hero {
+  background-color: var(--pixel-grey);
+}
+
+.section-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px;
+  max-width: 1145px; /* added to ensure the total width does not exceed 1145px */
+  margin: 0 auto; /* added to center the section container */
+}
+
+.hero-texts {
+  padding-right: 60px;
+}
+
+.hero-title {
+  font-size: var(--size-xl);
+  color: white;
+  margin-bottom: var(--size-l);
+  max-width: 615px;
+  text-align: left;
+}
+
+.hero-text {
+  max-width: 615px;
+  font-size: var(--size-s);
+  color: white;
+  margin-bottom: var(--size-m);
+  text-align: left;
+}
+
+.hero-image {
+  max-width: 430px;
+  height: auto;
+}
+
+/* 4. MAIN - Upload */
+
+/* 5. MAIN - Download */
+
+/* 6. FOOTER */
+
+#footer {
+  padding: var(--size-m);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--offgrey);
+}
+
+#powerBy {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: var(--size-xxs);
+}
+
+#powerBy a {
+  color: var(--pixel-red);
+}
+
+.brickmmo-logo {
+  max-width: 100%;
+  height: 30px;
+}
+
+/* #socmedia {
+  display: flex;
+  margin-bottom: 8px;
+} */
+
+#socmedia {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.socmedia-item {
+  margin: 0 10px;
+}
+
+.socmedia-item a {
+  color: var(--pixel-grey);
+  font-size: var(--size-s);
+}
+
+.socmedia-item a {
+  display: block;
+  height: var(--size-s);
+  color: var(--white);
+  font-size: var(--size-xs);
+  line-height: var(--size-m);
+  text-align: center;
+}
+
+.socmedia-item a:hover {
+  color: var(--pixel-orange);
+}
+
+.socmedia-item:not(:last-child) {
+  margin-right: var(--size-l);
+}
+.socmedia-item:last-child {
+  margin-right: 0;
+}
+
+/* MEDIA QUERIES */
+/* added the following media query to ensure the layout is responsive */
+@media screen and (max-width: 1145px) {
+  .section-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--size-l);
+  }
+  img {
+    margin-top: var(--size-m);
+    max-width: 100%;
+    height: auto;
+  }
+}
+
 .App {
   text-align: center;
 }
