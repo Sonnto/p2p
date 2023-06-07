@@ -23,19 +23,20 @@ function Footer() {
       </h2>
       <nav>
         <ul id="socmedia" className="socmedia">
-          <li className="socmedia-item">
-            <a href="https://www.tiktok.com/@brickmmo" target="_blank">
-              Tiktok
-            </a>
-          </li>
+          
           <li className="socmedia-item">
             <a href="https://twitter.com/brickmmo" target="_blank">
-              Twitter
+            <i class="fa-brands fa-twitter"></i> 
             </a>
           </li>
           <li className="socmedia-item">
             <a href="https://www.instagram.com/brickmmo/" target="_blank">
-              Insta
+            <i class="fa-brands fa-instagram"></i>
+            </a>
+          </li>
+          <li className="socmedia-item">
+            <a href="https://www.tiktok.com/@brickmmo" target="_blank">
+            <i class="fa-brands fa-tiktok"></i>
             </a>
           </li>
         </ul>

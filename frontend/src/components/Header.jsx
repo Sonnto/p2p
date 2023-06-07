@@ -30,7 +30,13 @@ function Header() {
             <a href="#sec-purchase">Buy LEGO</a>
           </li>
           <li className="nav-item">
-            <a href="#sec-socmed">Social Media Icons</a>
+            <a href="#sec-socmed"><i class="fa-brands fa-twitter"></i> </a>
+          </li>
+          <li className="nav-item">
+            <a href="#sec-socmed"><i class="fa-brands fa-instagram"></i></a>
+          </li>
+          <li className="nav-item">
+            <a href="#sec-socmed"><i class="fa-brands fa-tiktok"></i></a>
           </li>
         </ul>
       </nav>
