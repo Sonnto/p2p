@@ -12,7 +12,7 @@ function Banner() {
     <section id="hero">
       <div class="section-container">
         <div class="hero-texts">
-          <h2 class="hero-title">Lego-lize your photos!</h2>
+          <h2 class="hero-title">Lego-ize your photos!</h2>
           <p class="hero-text">
             Transform your uploaded images into LEGO shuds for free!
           </p>
