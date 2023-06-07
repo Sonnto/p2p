@@ -144,6 +144,10 @@ p {
 
 /* 4. MAIN - Upload */
 
+.error-message {
+  color: red;
+}
+
 /* 5. MAIN - Download */
 
 /* 6. FOOTER */
