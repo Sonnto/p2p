@@ -15,7 +15,7 @@
 //   );
 // }
 
-function Header() {
+export default function Header() {
   return (
     <header id="header">
       <h2 id="site-name">
@@ -30,18 +30,22 @@ function Header() {
             <a href="#sec-purchase">Buy LEGO</a>
           </li>
           <li className="nav-item">
-            <a href="#sec-socmed"><i class="fa-brands fa-twitter"></i> </a>
+            <a href="#sec-socmed">
+              <i class="fa-brands fa-twitter"></i>{" "}
+            </a>
           </li>
           <li className="nav-item">
-            <a href="#sec-socmed"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#sec-socmed">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
           </li>
           <li className="nav-item">
-            <a href="#sec-socmed"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#sec-socmed">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
           </li>
         </ul>
       </nav>
     </header>
   );
 }
-
-export default Header;
