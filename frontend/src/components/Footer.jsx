@@ -8,7 +8,7 @@ import React from "react";
 //   );
 // }
 
-function Footer() {
+export default function Footer() {
   return (
     <footer id="footer">
       <h2 id="powerBy">
@@ -23,20 +23,31 @@ function Footer() {
       </h2>
       <nav>
         <ul id="socmedia" className="socmedia">
-          
           <li className="socmedia-item">
-            <a href="https://twitter.com/brickmmo" target="_blank">
-            <i class="fa-brands fa-twitter"></i> 
+            <a
+              href="https://twitter.com/brickmmo"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <i class="fa-brands fa-twitter"></i>
             </a>
           </li>
           <li className="socmedia-item">
-            <a href="https://www.instagram.com/brickmmo/" target="_blank">
-            <i class="fa-brands fa-instagram"></i>
+            <a
+              href="https://www.instagram.com/brickmmo/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <i class="fa-brands fa-instagram"></i>
             </a>
           </li>
           <li className="socmedia-item">
-            <a href="https://www.tiktok.com/@brickmmo" target="_blank">
-            <i class="fa-brands fa-tiktok"></i>
+            <a
+              href="https://www.tiktok.com/@brickmmo"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <i class="fa-brands fa-tiktok"></i>
             </a>
           </li>
         </ul>
@@ -44,5 +55,3 @@ function Footer() {
     </footer>
   );
 }
-
-export default Footer;
