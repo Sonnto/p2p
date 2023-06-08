@@ -7,7 +7,7 @@ import React from "react";
 //     </div>
 //   );
 // }
-function Banner() {
+export default function Banner() {
   return (
     <section id="hero">
       <div class="section-container">
@@ -28,5 +28,3 @@ function Banner() {
     </section>
   );
 }
-
-export default Banner;
