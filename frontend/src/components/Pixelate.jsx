@@ -85,21 +85,25 @@ const Pixelate = () => {
       const instructionsFile = new File([pdfBytes], "instructions.pdf");
 
       // Store data in database
-      const formData = new FormData();
-      formData.append("original_image", selectedImage);
-      formData.append("pixelated_image", pixelatedImageResult.pixelatedImage);
-      formData.append("instructions", instructionsFile);
-      formData.append("segment", segment);
-
+      const requestData = {
+        originalImage: selectedImage,
+        pixelatedImage: pixelatedImageResult.pixelatedImage,
+        instructions: instructionsFile,
+        segment: segment,
+      };
       console.log("originalImage:", selectedImage);
       console.log("pixelatedImage:", pixelatedImageResult.pixelatedImage);
       console.log("instructions:", instructionsFile);
       console.log("segment:", segment);
+      console.log("requestData:", requestData);
 
       // Make a POST request to the backend endpoint
       fetch("http://localhost:1225/api", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
       })
         .then((response) => response.json())
         .then((data) => {

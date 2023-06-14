@@ -32,9 +32,16 @@ app.use(cors());
 app.use(express.json());
 //Handle POST requests to /api route
 app.post("/api", async (req, res) => {
+  console.log("Received data from frontend #1:", req.body);
+
   // Extract data from the request body
   const { originalImage, pixelatedImage, instructions, segment } = req.body;
+  console.log("Received data from frontend #2:", req.body);
 
+  console.log("originalImage:", originalImage);
+  console.log("pixelatedImage:", pixelatedImage);
+  console.log("instructions:", instructions);
+  console.log("segment:", segment);
   // Store data in database
   const data = {
     original_image: originalImage,
