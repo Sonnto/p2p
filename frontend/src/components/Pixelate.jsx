@@ -1,6 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { pixelateImage } from "../api/convert";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import Cropper from "cropperjs";
+import "cropperjs/dist/cropper.css";
 
 const Pixelate = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -8,13 +10,27 @@ const Pixelate = () => {
   const [convertedData, setConvertedData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const imageRef = useRef(null);
-  const frameSize = 400;
+  const frameSize = 200;
+  const [cropper, setCropper] = useState(null); //sets cropped image if it's not perfect square
 
   const options = [
     { label: '32x32 Brick (10"x10")', value: 10 },
     { label: '64x64 Brick (20"x20")', value: 20 },
     { label: '96x96 Lego Bricks (30"x30")', value: 30 },
   ];
+
+  useEffect(() => {
+    if (selectedImage) {
+      const cropperInstance = new Cropper(imageRef.current, {
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: "move",
+        autoCropArea: 1,
+        cropBoxResizable: true,
+      });
+      setCropper(cropperInstance);
+    }
+  }, [selectedImage]);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -42,37 +58,20 @@ const Pixelate = () => {
     }
 
     try {
-      const resizedImage = resizeImage();
-      let adjustedPixelSize = pixelSize;
-
-      if (pixelSize === 30) {
-        adjustedPixelSize = 10;
-      } else if (pixelSize === 20) {
-        adjustedPixelSize = 20;
-      } else if (pixelSize === 10) {
-        adjustedPixelSize = 30;
-      }
-
-      const pixelatedImageResult = await pixelateImage(
-        resizedImage,
-        adjustedPixelSize,
-        { borderRadius: "50%" } //makes the pixels circle instead of squares
-      );
+      const croppedImage = cropper.getCroppedCanvas().toDataURL("image/jpeg");
+      const pixelatedImageResult = await pixelateImage(croppedImage, pixelSize);
 
       setConvertedData(pixelatedImageResult);
       setErrorMessage("");
 
       const instructions = pixelatedImageResult.instructions;
 
-      // Create a new PDF document
       const pdfDoc = await PDFDocument.create();
       const page = pdfDoc.addPage();
       const { width, height } = page.getSize();
 
-      // Embed a standard font
       const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-      // Draw the instructions text
       page.drawText(instructions, {
         x: 50,
         y: height - 100,
@@ -81,24 +80,16 @@ const Pixelate = () => {
         color: rgb(0, 0, 0),
       });
 
-      // Save the PDF document as a blob
       const pdfBytes = await pdfDoc.save();
       const instructionsFile = new File([pdfBytes], "instructions.pdf");
 
-      // Store data in database
       const requestData = {
         originalImage: selectedImage,
         pixelatedImage: pixelatedImageResult.pixelatedImage,
         instructions: instructionsFile,
         segment: segment,
       };
-      console.log("originalImage:", selectedImage);
-      console.log("pixelatedImage:", pixelatedImageResult.pixelatedImage);
-      console.log("instructions:", instructionsFile);
-      console.log("segment:", segment);
-      console.log("requestData:", requestData);
 
-      // Make a POST request to the backend endpoint
       fetch("http://localhost:1225/api", {
         method: "POST",
         headers: {
@@ -114,7 +105,6 @@ const Pixelate = () => {
           console.error("Error storing data in the database:", error);
         });
 
-      // Generate the download URL for instructions
       const instructionsUrl = URL.createObjectURL(instructionsFile);
       setDownloadUrl(instructionsUrl);
     } catch (error) {
@@ -134,6 +124,7 @@ const Pixelate = () => {
   };
 
   return (
+    <div className="pixelate-container">
     <div className="upload-section">
       <input type="file" onChange={handleImageUpload} />
 
@@ -170,7 +161,8 @@ const Pixelate = () => {
           type="text"
           id="segment"
           value={segment}
-          onChange={handleSegmentChange} placeholder="Say something about this"
+          onChange={handleSegmentChange}
+          placeholder="Say something about this"
         />
       </div>
 
@@ -180,7 +172,6 @@ const Pixelate = () => {
         className="p-2 text-xs md:text-sm bg-gradient-to-b from-orange-200 to-orange-400 border border-orange-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 active:from-orange-500 text-white"
         onClick={handlePixelate}
       >
-        {" "}
         Pixelate!
       </button>
 
@@ -190,22 +181,20 @@ const Pixelate = () => {
           <img src={convertedData.pixelatedImage} alt="pixelated" />
         </div>
       )}
+
       {downloadUrl && (
-        <a href={downloadUrl} download="instructions.pdf">
+        <a href={downloadUrl} download="instructions.pdf" className="download-button">
           Download Instructions
         </a>
       )}
 
-      {/* Reset Button: Refreshes the page */}
       <div>
-        <a href="./">
-        <i class="fa-solid fa-arrows-rotate"></i> Refresh Page
+        <a href="./" className="refresh-button ">
+          <i className="fa-solid fa-arrows-rotate"></i> Refresh Page
         </a>
       </div>
-        
-
     </div>
-    
+    </div>
   );
 };
 

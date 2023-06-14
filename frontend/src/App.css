@@ -144,11 +144,97 @@ p {
 
 /* 4. MAIN - Upload */
 
+.pixelate-container {
+  padding: 8em;
+  background-color: white;
+}
+
+
+
 .error-message {
   color: red;
 }
 
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.image-preview {
+  margin-top: 20px;
+}
+
+.pixelsPerBrick,
+.segment {
+  margin-top: 20px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.button-container button,
+.button-container a {
+  margin: 5px;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.refresh-button i {
+  margin-right: 5px;
+}
+
+
 /* 5. MAIN - Download */
+
+.download-button {
+  background-color: #1E92FD;
+  border-radius: 10px;
+  font-family: Montserrat;
+  font-size: 20px;
+  width: 357px;
+  height: 50px;
+  color: white;
+  padding: 20px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refresh-button {
+  background-color: #EB741D;
+  border-radius: 10px;
+  width: 294px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.refresh-button i {
+  margin-right: 15px;
+}
 
 /* 6. FOOTER */
 
@@ -163,11 +249,14 @@ p {
 #powerBy {
   text-align: center;
   margin-bottom: 16px;
+  display: flex;
   font-size: var(--size-xxs);
+  align-items: center;
 }
 
 #powerBy a {
   color: var(--pixel-red);
+  margin-left: 10px;
 }
 
 .brickmmo-logo {
