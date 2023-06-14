@@ -33,6 +33,8 @@ const Pixelate = () => {
     setSegment(event.target.value);
   };
 
+  const [downloadUrl, setDownloadUrl] = useState(null);
+
   const handlePixelate = async () => {
     if (!selectedImage) {
       setErrorMessage("Error! Please upload an image before pixelating.");
@@ -91,7 +93,7 @@ const Pixelate = () => {
 
       console.log("originalImage:", selectedImage);
       console.log("pixelatedImage:", pixelatedImageResult.pixelatedImage);
-      console.log("instructions:", instructions);
+      console.log("instructions:", instructionsFile);
       console.log("segment:", segment);
 
       // Make a POST request to the backend endpoint
@@ -106,6 +108,10 @@ const Pixelate = () => {
         .catch((error) => {
           console.error("Error storing data in the database:", error);
         });
+
+      // Generate the download URL for instructions
+      const instructionsUrl = URL.createObjectURL(instructionsFile);
+      setDownloadUrl(instructionsUrl);
     } catch (error) {
       console.error(error);
     }
@@ -178,6 +184,11 @@ const Pixelate = () => {
           <h3>Pixelated Image:</h3>
           <img src={convertedData.pixelatedImage} alt="pixelated" />
         </div>
+      )}
+      {downloadUrl && (
+        <a href={downloadUrl} download="instructions.pdf">
+          Download Instructions
+        </a>
       )}
     </div>
   );
