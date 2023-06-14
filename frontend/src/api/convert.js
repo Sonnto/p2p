@@ -94,7 +94,7 @@ const pixelateImage = async (imageDataUrl, blockSize) => {
       Object.entries(blockColors).forEach(([colorKey, count]) => {
         const [r, g, b] = colorKey.split("_").map(Number);
         // console.log(`RGB(${r}, ${g}, ${b}): ${count} blocks`);
-        instructions += `RGB(${r}, ${g}, ${b}): ${count} blocks`;
+        instructions += `RGB(${r}, ${g}, ${b}): ${count} blocks\n`;
       });
 
       // Log the total number of blocks
