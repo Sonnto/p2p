@@ -55,7 +55,8 @@ const Pixelate = () => {
 
       const pixelatedImageResult = await pixelateImage(
         resizedImage,
-        adjustedPixelSize
+        adjustedPixelSize,
+        { borderRadius: "50%" } //makes the pixels circle instead of squares
       );
 
       setConvertedData(pixelatedImageResult);
@@ -169,7 +170,7 @@ const Pixelate = () => {
           type="text"
           id="segment"
           value={segment}
-          onChange={handleSegmentChange}
+          onChange={handleSegmentChange} placeholder="Say something about this"
         />
       </div>
 
@@ -194,7 +195,17 @@ const Pixelate = () => {
           Download Instructions
         </a>
       )}
+
+      {/* Reset Button: Refreshes the page */}
+      <div>
+        <a href="./">
+        <i class="fa-solid fa-arrows-rotate"></i> Refresh Page
+        </a>
+      </div>
+        
+
     </div>
+    
   );
 };
 
