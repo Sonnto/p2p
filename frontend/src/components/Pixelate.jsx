@@ -97,13 +97,13 @@ const Pixelate = () => {
       console.log("segment:", segment);
 
       // Make a POST request to the backend endpoint
-      fetch("/api", {
+      fetch("http://localhost:1225/api", {
         method: "POST",
         body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Data stored successfully:", data);
+          console.log("Data sent successfully:", data);
         })
         .catch((error) => {
           console.error("Error storing data in the database:", error);

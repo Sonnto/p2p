@@ -1,14 +1,15 @@
 const path = require("path");
 const express = require("express");
 const mysql = require("mysql");
+const cors = require("cors");
 const pixelateImage = require("../../frontend/src/api/convert.js");
 
 //Manage pool of database connections
 const pool = mysql.createPool({
   host: "localhost",
   port: 8889,
-  user: "root",
-  password: "",
+  user: "admin",
+  password: "admin",
   database: "pixelatedb",
 });
 
@@ -25,9 +26,10 @@ const PORT = process.env.PORT || 1225;
 
 const app = express();
 
-//Node serve files for React frontend
-app.use(express.static(path.resolve(__dirname, "../frontend/build")));
+app.use(cors());
 
+//Node serve files for React frontend
+app.use(express.json());
 //Handle POST requests to /api route
 app.post("/api", async (req, res) => {
   // Extract data from the request body
@@ -53,7 +55,7 @@ app.post("/api", async (req, res) => {
 
 //All other GET requests not handled before will return React frontend
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "../", "index.html"));
 });
 
 app.listen(PORT, () => {
