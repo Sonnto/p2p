@@ -5,10 +5,20 @@ const pixelateImage = require("../../frontend/src/api/convert.js");
 
 //Manage pool of database connections
 const pool = mysql.createPool({
-  host: "localhost:8888",
-  user: "USERNAME",
-  password: "PASSWORD",
+  host: "localhost",
+  port: 8889,
+  user: "root",
+  password: "",
   database: "pixelatedb",
+});
+
+// Handle connection events
+pool.on("connect", () => {
+  console.log("Connected to the database");
+});
+
+pool.on("error", (err) => {
+  console.error("Error connecting to the database:", err);
 });
 
 const PORT = process.env.PORT || 1225;
@@ -16,19 +26,17 @@ const PORT = process.env.PORT || 1225;
 const app = express();
 
 //Node serve files for React frontend
-app.use(express.static(path.resolve(__dirname, "../client/build")));
+app.use(express.static(path.resolve(__dirname, "../frontend/build")));
 
-//Handle GET requests to /api route
-app.get("/api", (req, res) => {
-  //Pixelate image and get pixelated image URL;
-  const pixelatedImageUrl = pixelateImage(req.query.image);
-  const instructions = "";
-  const segment = "";
+//Handle POST requests to /api route
+app.post("/api", async (req, res) => {
+  // Extract data from the request body
+  const { originalImage, pixelatedImage, instructions, segment } = req.body;
 
-  //Store data in database
+  // Store data in database
   const data = {
-    originalImage: req.query.image,
-    pixelatedImage: pixelatedImageUrl,
+    original_image: originalImage,
+    pixelated_image: pixelatedImage,
     instructions: instructions,
     segment: segment,
   };
@@ -41,8 +49,6 @@ app.get("/api", (req, res) => {
       res.json({ message: "Data stored successfully" });
     }
   });
-
-  res.json({ message: "Data from the server" });
 });
 
 //All other GET requests not handled before will return React frontend
