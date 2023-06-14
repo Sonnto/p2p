@@ -17,7 +17,7 @@ export default function Footer() {
           <img
             src="../images/brickmmo.png"
             alt="Brick MMO"
-            class="brickmmo-logo"
+            className="brickmmo-logo"
           />
         </a>
       </h2>
@@ -29,7 +29,7 @@ export default function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              <i class="fa-brands fa-twitter"></i>
+              <i className="fa-brands fa-twitter"></i>
             </a>
           </li>
           <li className="socmedia-item">
@@ -38,7 +38,7 @@ export default function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              <i class="fa-brands fa-instagram"></i>
+              <i className="fa-brands fa-instagram"></i>
             </a>
           </li>
           <li className="socmedia-item">
@@ -47,7 +47,7 @@ export default function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              <i class="fa-brands fa-tiktok"></i>
+              <i className="fa-brands fa-tiktok"></i>
             </a>
           </li>
         </ul>

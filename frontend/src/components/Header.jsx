@@ -1,20 +1,4 @@
 // import React from "react";
-
-// function Header() {
-//   return (
-//     <header>
-//       <nav className="text-red-500 flex items-center flex-grow text-xs space-x-6 mx-6 whitespace-nowrap">
-//         <div>PixelateLogo</div>
-//         <ul className="flex items-center text-xs space-x-6 mx-6 whitespace-nowrap">
-//           <li className="mr-4">About BrickMMO</li>
-//           <li className="mr-4">Buy LEGOs</li>
-//           <li className="mr-4">Social Media</li>
-//         </ul>
-//       </nav>
-//     </header>
-//   );
-// }
-
 export default function Header() {
   return (
     <header id="header">
@@ -31,17 +15,17 @@ export default function Header() {
           </li>
           <li className="nav-item">
             <a href="#sec-socmed">
-              <i class="fa-brands fa-twitter"></i>{" "}
+              <i className="fa-brands fa-twitter"></i>{" "}
             </a>
           </li>
           <li className="nav-item">
             <a href="#sec-socmed">
-              <i class="fa-brands fa-instagram"></i>
+              <i className="fa-brands fa-instagram"></i>
             </a>
           </li>
           <li className="nav-item">
             <a href="#sec-socmed">
-              <i class="fa-brands fa-tiktok"></i>
+              <i className="fa-brands fa-tiktok"></i>
             </a>
           </li>
         </ul>
