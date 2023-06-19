@@ -81,12 +81,17 @@ const Pixelate = () => {
       });
 
       const pdfBytes = await pdfDoc.save();
+      // Convert the PDF bytes to base64
+      const pdfBase64 = btoa(String.fromCharCode(...pdfBytes));
+
+      console.log("Frontend PDF being stored: ", pdfBase64);
+      // Allows PDF to be downloaded
       const instructionsFile = new File([pdfBytes], "instructions.pdf");
 
       const requestData = {
         originalImage: selectedImage,
         pixelatedImage: pixelatedImageResult.pixelatedImage,
-        instructions: instructionsFile,
+        instructions: pdfBase64,
         segment: segment,
       };
 
@@ -104,6 +109,11 @@ const Pixelate = () => {
         .catch((error) => {
           console.error("Error storing data in the database:", error);
         });
+
+      // console.log("originalImage: ", selectedImage);
+      // console.log("pixelatedImage: ", pixelatedImageResult.pixelatedImage);
+      // console.log("instructionsFile: ", instructionsFile);
+      // console.log("segment: ", segment);
 
       const instructionsUrl = URL.createObjectURL(instructionsFile);
       setDownloadUrl(instructionsUrl);
@@ -125,75 +135,79 @@ const Pixelate = () => {
 
   return (
     <div className="pixelate-container">
-    <div className="upload-section">
-      <input type="file" onChange={handleImageUpload} />
+      <div className="upload-section">
+        <input type="file" onChange={handleImageUpload} />
 
-      {selectedImage && (
-        <div className="image-preview">
-          <img
-            ref={imageRef}
-            src={selectedImage}
-            alt="pixelate"
-            width={frameSize}
-            height={frameSize}
+        {selectedImage && (
+          <div className="image-preview">
+            <img
+              ref={imageRef}
+              src={selectedImage}
+              alt="pixelate"
+              width={frameSize}
+              height={frameSize}
+            />
+          </div>
+        )}
+
+        <div className="pixelsPerBrick">
+          <label htmlFor="pixelSize">Pixels per brick: </label>
+          <select
+            id="pixelSize"
+            value={pixelSize}
+            onChange={(e) => setPixelSize(Number(e.target.value))}
+          >
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="segment">Segment: </label>
+          <input
+            type="text"
+            id="segment"
+            value={segment}
+            onChange={handleSegmentChange}
+            placeholder="Say something about this"
           />
         </div>
-      )}
 
-      <div className="pixelsPerBrick">
-        <label htmlFor="pixelSize">Pixels per brick: </label>
-        <select
-          id="pixelSize"
-          value={pixelSize}
-          onChange={(e) => setPixelSize(Number(e.target.value))}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+        <button
+          className="p-2 text-xs md:text-sm bg-gradient-to-b from-orange-200 to-orange-400 border border-orange-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 active:from-orange-500 text-white"
+          onClick={handlePixelate}
         >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+          Pixelate!
+        </button>
 
-      <div>
-        <label htmlFor="segment">Segment: </label>
-        <input
-          type="text"
-          id="segment"
-          value={segment}
-          onChange={handleSegmentChange}
-          placeholder="Say something about this"
-        />
-      </div>
+        {convertedData && (
+          <div>
+            <h3>Pixelated Image:</h3>
+            <img src={convertedData.pixelatedImage} alt="pixelated" />
+          </div>
+        )}
 
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {downloadUrl && (
+          <a
+            href={downloadUrl}
+            download="instructions.pdf"
+            className="download-button"
+          >
+            Download Instructions
+          </a>
+        )}
 
-      <button
-        className="p-2 text-xs md:text-sm bg-gradient-to-b from-orange-200 to-orange-400 border border-orange-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 active:from-orange-500 text-white"
-        onClick={handlePixelate}
-      >
-        Pixelate!
-      </button>
-
-      {convertedData && (
         <div>
-          <h3>Pixelated Image:</h3>
-          <img src={convertedData.pixelatedImage} alt="pixelated" />
+          <a href="./" className="refresh-button ">
+            <i className="fa-solid fa-arrows-rotate"></i> Refresh Page
+          </a>
         </div>
-      )}
-
-      {downloadUrl && (
-        <a href={downloadUrl} download="instructions.pdf" className="download-button">
-          Download Instructions
-        </a>
-      )}
-
-      <div>
-        <a href="./" className="refresh-button ">
-          <i className="fa-solid fa-arrows-rotate"></i> Refresh Page
-        </a>
       </div>
-    </div>
     </div>
   );
 };
