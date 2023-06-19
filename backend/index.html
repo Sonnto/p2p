@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pixelate Backend</title>
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <h1>Pixelate Backend Server</h1>
-    <div id="data-container"></div>
+    <div class="data-table"></div>
     <script>
-      // Fetch and display the stored data
       fetch("/api/pixelations")
         .then((response) => {
           console.log(response);
@@ -21,33 +21,58 @@
         })
         .then((data) => {
           console.log("Received data:", data);
-          const container = document.getElementById("data-container");
+          const container = document.querySelector(".data-table");
 
           data.forEach((item) => {
             const div = document.createElement("div");
+            div.className = "data-table-item";
+
+            const originalImagePreview = document.createElement("img");
+            originalImagePreview.className = "data-table-item-image";
+            originalImagePreview.src = item.original_image;
+            originalImagePreview.alt = "Original Image";
+
+            const pixelatedImagePreview = document.createElement("img");
+            pixelatedImagePreview.className = "data-table-item-image";
+            pixelatedImagePreview.src = item.pixelated_image;
+            pixelatedImagePreview.alt = "Pixelated Image";
 
             const originalImageLink = document.createElement("a");
+            originalImageLink.className = "data-table-item-link";
             originalImageLink.href = item.original_image;
             originalImageLink.download = "original_image.jpeg";
-            originalImageLink.textContent = "Download Original Image";
+            originalImageLink.textContent = "Download Original Image | ";
 
             const pixelatedImageLink = document.createElement("a");
-
+            pixelatedImageLink.className = "data-table-item-link";
             pixelatedImageLink.href = item.pixelated_image;
             pixelatedImageLink.download = "pixelated_image.jpeg";
-            pixelatedImageLink.textContent = "Download Pixelated Image";
+            pixelatedImageLink.textContent = "Download Pixelated Image | ";
 
             const instructionsLink = document.createElement("a");
-
+            instructionsLink.className = "data-table-item-link";
             instructionsLink.href = item.instructions;
             instructionsLink.download = "instructions.pdf";
             instructionsLink.textContent = "Download Instructions";
 
-            div.appendChild(originalImageLink);
-            div.appendChild(document.createElement("br"));
-            div.appendChild(pixelatedImageLink);
-            div.appendChild(document.createElement("br"));
-            div.appendChild(instructionsLink);
+            const segmentText = document.createElement("p");
+            segmentText.className = "data-table-item-segment";
+            segmentText.textContent = `Segment: ${item.segment}`;
+
+            const previewContainer = document.createElement("div");
+            previewContainer.className = "preview-container";
+            previewContainer.appendChild(originalImagePreview);
+            previewContainer.appendChild(pixelatedImagePreview);
+
+            const linkContainer = document.createElement("div");
+            linkContainer.className = "link-container";
+            linkContainer.appendChild(originalImageLink);
+            linkContainer.appendChild(pixelatedImageLink);
+            linkContainer.appendChild(instructionsLink);
+
+            div.appendChild(previewContainer);
+            div.appendChild(linkContainer);
+            div.appendChild(segmentText);
 
             container.appendChild(div);
           });
