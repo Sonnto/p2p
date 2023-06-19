@@ -178,9 +178,8 @@ const Pixelate = () => {
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        <button
-          className="p-2 text-xs md:text-sm bg-gradient-to-b from-orange-200 to-orange-400 border border-orange-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 active:from-orange-500 text-white"
-          onClick={handlePixelate}
+        <button onClick={handlePixelate} className="pixelate-button"
+          //className="p-2 text-xs md:text-sm bg-gradient-to-b from-orange-200 to-orange-400 border border-orange-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 active:from-orange-500 text-white"
         >
           Pixelate!
         </button>

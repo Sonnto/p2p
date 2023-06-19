@@ -190,6 +190,8 @@ p {
   margin: 5px;
 }
 
+
+
 .refresh-button {
   display: flex;
   align-items: center;
@@ -218,8 +220,22 @@ p {
   justify-content: center;
 }
 
-.refresh-button {
-  background-color: #EB741D;
+ .pixelate-button {
+  background-color: var(--pixel-orange);
+  border-radius: 10px;
+  width: 294px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.refresh-button{
+  background-color: var(--pixel-red);
   border-radius: 10px;
   width: 294px;
   height: 80px;
