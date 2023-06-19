@@ -52,7 +52,7 @@ app.get("/api/pixelations", (req, res) => {
           id: item.id,
           original_image: originalImageBase64,
           pixelated_image: pixelatedImageBase64,
-          instructions: item.instructions,
+          instructions: `/api/pixelations/${item.id}/instructions`, // Instructions endpoint
           segment: item.segment,
         };
       });
@@ -61,6 +61,42 @@ app.get("/api/pixelations", (req, res) => {
       res.json(processedResults);
     }
   });
+});
+
+//GET instructions from database for speciifed {id}
+app.get("/api/pixelations/:id/instructions", (req, res) => {
+  //accepts {id} parameter in URL path
+  const id = req.params.id;
+  //requires specified {id}
+  pool.query(
+    "SELECT instructions FROM pixelations WHERE id = ?",
+    id,
+    (error, results) => {
+      if (error) {
+        console.error(
+          "Error retrieving instructions from the database:",
+          error
+        );
+        res.status(500).json({ error: "Failed to retrieve instructions" });
+      } else if (results.length === 0) {
+        res.status(404).json({ error: "Instructions not found" });
+      } else {
+        //convert base64 to buffer
+        const instructionsBuffer = Buffer.from(
+          results[0].instructions,
+          "base64"
+        );
+        //set PDF-related headers in response
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          'attachment; filename="instructions.pdf"'
+        );
+        //sends buffer-format instructions as response
+        res.send(instructionsBuffer);
+      }
+    }
+  );
 });
 
 //Handle POST requests to /api route
