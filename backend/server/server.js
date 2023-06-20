@@ -1,6 +1,6 @@
-// if (process.env.NODE_ENV != "production") {
-//   require("dotenv").config();
-// }
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
 const buffer = require("node:buffer");
 const path = require("path");
 const express = require("express");
@@ -47,34 +47,45 @@ app.use(express.json());
 
 app.set("view-engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
-// app.use(flash());
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
+app.use(flash());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 // app.use(passport.initialize)();
 // app.use(passport.session());
 
 // Middleware function to check if the user is authenticated
-let isAuthenticated = false;
+// let isAuthenticated = false;
 
 function checkAuthenticated(req, res, next) {
-  if (isAuthenticated) {
+  if (req.session.authenticated) {
     return next();
   }
   res.redirect("/login");
 }
 
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(500).send();
+    }
+    // isAuthenticated = false; // Set the authentication flag to false
+    res.redirect("/login");
+  });
+});
+
 app.get("/", checkAuthenticated, (req, res) => {
-  res.render("../views/index.ejs");
+  res.render("../views/index.ejs", { loggedIn: req.session.loggedIn });
 });
 
 app.get("/login", (req, res) => {
-  res.render("../views/login.ejs");
+  res.render("../views/login.ejs", { loggedIn: req.session.loggedIn });
 });
 
 //using Passport
@@ -98,7 +109,7 @@ app.post("/login", async (req, res) => {
         return res.status(500).json({ error: "Failed to retrieve user" });
       }
       if (results.length === 0) {
-        return res.status(400).send("Cannot find user");
+        return res.redirect("/error");
       }
       const user = results[0];
       bcrypt.compare(req.body.password, user.password, (err, result) => {
@@ -107,8 +118,9 @@ app.post("/login", async (req, res) => {
           return res.status(500).send();
         }
         if (result) {
-          isAuthenticated = true;
-          return res.redirect("/", { message: "Successful login" });
+          req.session.authenticated = true; //sets authentication flag true
+          req.session.loggedIn = true;
+          return res.redirect("/"); //redirect with status code 200 if username + password matches
         } else {
           return res.redirect("/login");
         }
@@ -118,7 +130,7 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/register", checkAuthenticated, (req, res) => {
-  res.render("../views/register.ejs");
+  res.render("../views/register.ejs", { loggedIn: req.session.loggedIn });
 });
 
 app.post("/register", async (req, res) => {
@@ -136,11 +148,15 @@ app.post("/register", async (req, res) => {
         res.json({ message: "User stored successfully" });
       }
     });
-    res.redirect("/login");
+    res.redirect("/login", { loggedIn: req.session.loggedIn });
   } catch {
-    res.redirect("/register");
+    res.redirect("/register", { loggedIn: req.session.loggedIn });
   }
   // console.log(user);
+});
+
+app.get("/error", (req, res) => {
+  res.render("../views/error.ejs", { loggedIn: req.session.loggedIn });
 });
 
 //GET all users

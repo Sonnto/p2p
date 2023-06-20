@@ -1,4 +1,26 @@
-<h1>Register a New User</h1>
+<header>
+  <h1>Pixelate Backend</h1>
+  <h2>Register a New User</h2>
+  <nav>
+    <ul>
+      <li>
+        <h3><a href="/">Home</a></h3>
+      </li>
+      <% if (loggedIn) { %>
+      <li>
+        <h3><a href="/logout">Logout</a></h3>
+      </li>
+      <li>
+        <h3><a href="/register">Register New User</a></h3>
+      </li>
+      <% } else { %>
+      <li>
+        <h3><a href="/login">Login</a></h3>
+      </li>
+      <% } %>
+    </ul>
+  </nav>
+</header>
 
 <form action="/register" method="POST">
   <div>
@@ -11,4 +33,3 @@
   </div>
   <button type="submit">Register</button>
 </form>
-<a href="/login">Login</a>
