@@ -1,33 +1,24 @@
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
 }
-const buffer = require("node:buffer");
 const path = require("path");
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
-const pixelateImage = require("../../frontend/src/api/convert.js");
-const fs = require("fs");
 const bcrypt = require("bcrypt");
-const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
 
-// const initializePassport = require("../passport-config.js");
-// initializePassport(passport, (username) =>
-//   users.find((user) => user.username === username)
-// );
-
 //Manage pool of database connections
 const pool = mysql.createPool({
-  host: process.env.HOST,
-  port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
-// Handle connection events
+// Handle connection events, create a default user on database initialization
 pool.on("connect", () => {
   console.log("Connected to the database");
   createDefaultUser();
@@ -37,11 +28,10 @@ pool.on("error", (err) => {
   console.error("Error connecting to the database:", err);
 });
 
-const PORT = process.env.PORT || 1225;
+const PORT = process.env.SERVER_PORT || 1225;
 
 const app = express();
 
-//Use
 app.use(cors());
 //Node serve files for React frontend
 app.use(express.json());
@@ -90,7 +80,6 @@ app.get("/logout", (req, res) => {
       console.error("Error destroying session:", err);
       return res.status(500).send();
     }
-    // isAuthenticated = false; // Set the authentication flag to false
     res.redirect("/login");
   });
 });
@@ -123,17 +112,7 @@ app.get("/login", (req, res) => {
   res.render("../views/login.ejs", { loggedIn: req.session.loggedIn });
 });
 
-//using Passport
-// app.post(
-//   "/login",
-//   passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/login",
-//     failureFlash: true,
-//   })
-// );
-
-//Regular user authentication without Passport
+//User authentication
 app.post("/login", async (req, res) => {
   pool.query(
     "SELECT * FROM users WHERE username = ?",
@@ -155,7 +134,7 @@ app.post("/login", async (req, res) => {
         if (result) {
           req.session.authenticated = true; //sets authentication flag true
           req.session.loggedIn = true;
-          return res.redirect("/"); //redirect with status code 200 if username + password matches
+          return res.redirect("/"); //redirect with access to database if username + password matches
         } else {
           return res.redirect("/login");
         }
@@ -187,31 +166,10 @@ app.post("/register", async (req, res) => {
   } catch {
     res.redirect("/register", { loggedIn: req.session.loggedIn });
   }
-  // console.log(user);
 });
 
 app.get("/error", (req, res) => {
   res.render("../views/error.ejs", { loggedIn: req.session.loggedIn });
-});
-
-//GET all users
-app.get("/api/users", (req, res) => {
-  pool.query("SELECT * FROM users", (error, results) => {
-    if (error) {
-      console.error("Error retrieving data from the database:", error);
-      res.status(500).json({ error: "Failed to retrieve data" });
-    } else {
-      const userData = results.map((user) => {
-        return {
-          id: user.id,
-          username: user.username,
-          password: user.password,
-        };
-      });
-      console.log(userData);
-      res.json(userData);
-    }
-  });
 });
 
 //GET: retrieve data from pixelations table to show, edit, delete, and download data
@@ -307,7 +265,6 @@ app.post("/api", async (req, res) => {
   // console.log("instructions:", instructions);
   // console.log("segment:", segment);
   // Store data in database
-
   const data = {
     original_image: originalImage,
     pixelated_image: pixelatedImage,
