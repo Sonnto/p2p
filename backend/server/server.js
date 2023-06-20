@@ -20,17 +20,17 @@ const session = require("express-session");
 
 //Manage pool of database connections
 const pool = mysql.createPool({
-  host: "localhost",
-  port: 8889,
-  user: "admin",
-  password: "admin",
-  database: "pixelatedb",
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
 });
 
 // Handle connection events
 pool.on("connect", () => {
   console.log("Connected to the database");
-  createDefaultUser(); // Call createDefaultUser function here
+  createDefaultUser();
 });
 
 pool.on("error", (err) => {
@@ -67,7 +67,7 @@ const createDefaultUser = () => {
     username: username,
     password: hashedPassword,
   };
-
+  //creates the users and inserts into a user table
   pool.query("INSERT INTO users SET ?", user, (error, results) => {
     if (error) {
       console.error("Error creating default user:", error);
