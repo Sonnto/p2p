@@ -199,22 +199,6 @@ app.get("/api/users", (req, res) => {
   });
 });
 
-// DELETE: delete a pixelation record based on the ID
-app.delete("/api/pixelations/:id", (req, res) => {
-  const id = req.params.id;
-  pool.query("DELETE FROM pixelations WHERE id = ?", id, (error, results) => {
-    if (error) {
-      console.error(
-        "Error deleting the pixelation data from the database:",
-        error
-      );
-      res.status(500).json({ error: "Failed to delete pixelation data" });
-    } else {
-      res.json({ message: "Pixelation data deleted successfully" });
-    }
-  });
-});
-
 //GET: retrieve data from pixelations table to show, edit, delete, and download data
 app.get("/api/pixelations", (req, res) => {
   pool.query("SELECT * FROM pixelations", (error, results) => {
@@ -241,6 +225,22 @@ app.get("/api/pixelations", (req, res) => {
       //console.log("**AFTER RETURN: ", processedResults);
       //console.log("**End of AFTER RETURN");
       res.json(processedResults);
+    }
+  });
+});
+
+// DELETE: delete a pixelation record based on the ID
+app.post("/api/pixelations/:id", (req, res) => {
+  const id = req.params.id;
+  pool.query("DELETE FROM pixelations WHERE id = ?", id, (error, results) => {
+    if (error) {
+      console.error(
+        "Error deleting the pixelation data from the database:",
+        error
+      );
+      res.redirect("/error", { error: "Failed to delete pixelation data" });
+    } else {
+      res.redirect("/");
     }
   });
 });
