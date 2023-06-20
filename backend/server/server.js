@@ -1,3 +1,6 @@
+// if (process.env.NODE_ENV != "production") {
+//   require("dotenv").config();
+// }
 const buffer = require("node:buffer");
 const path = require("path");
 const express = require("express");
@@ -5,6 +8,15 @@ const mysql = require("mysql");
 const cors = require("cors");
 const pixelateImage = require("../../frontend/src/api/convert.js");
 const fs = require("fs");
+const bcrypt = require("bcrypt");
+const passport = require("passport");
+const flash = require("express-flash");
+const session = require("express-session");
+
+// const initializePassport = require("../passport-config.js");
+// initializePassport(passport, (username) =>
+//   users.find((user) => user.username === username)
+// );
 
 //Manage pool of database connections
 const pool = mysql.createPool({
@@ -28,10 +40,128 @@ const PORT = process.env.PORT || 1225;
 
 const app = express();
 
+//Use
 app.use(cors());
-
 //Node serve files for React frontend
 app.use(express.json());
+
+app.set("view-engine", "ejs");
+app.use(express.urlencoded({ extended: false }));
+// app.use(flash());
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
+
+// app.use(passport.initialize)();
+// app.use(passport.session());
+
+// Middleware function to check if the user is authenticated
+let isAuthenticated = false;
+
+function checkAuthenticated(req, res, next) {
+  if (isAuthenticated) {
+    return next();
+  }
+  res.redirect("/login");
+}
+
+app.get("/", checkAuthenticated, (req, res) => {
+  res.render("../views/index.ejs");
+});
+
+app.get("/login", (req, res) => {
+  res.render("../views/login.ejs");
+});
+
+//using Passport
+// app.post(
+//   "/login",
+//   passport.authenticate("local", {
+//     successRedirect: "/",
+//     failureRedirect: "/login",
+//     failureFlash: true,
+//   })
+// );
+
+//Regular user authentication without Passport
+app.post("/login", async (req, res) => {
+  pool.query(
+    "SELECT * FROM users WHERE username = ?",
+    req.body.username,
+    (error, results) => {
+      if (error) {
+        console.error("Error retrieving user from the database:", error);
+        return res.status(500).json({ error: "Failed to retrieve user" });
+      }
+      if (results.length === 0) {
+        return res.status(400).send("Cannot find user");
+      }
+      const user = results[0];
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (err) {
+          console.error("Error comparing passwords:", err);
+          return res.status(500).send();
+        }
+        if (result) {
+          isAuthenticated = true;
+          return res.redirect("/", { message: "Successful login" });
+        } else {
+          return res.redirect("/login");
+        }
+      });
+    }
+  );
+});
+
+app.get("/register", checkAuthenticated, (req, res) => {
+  res.render("../views/register.ejs");
+});
+
+app.post("/register", async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const user = {
+      username: req.body.username,
+      password: hashedPassword,
+    };
+    pool.query("INSERT INTO users SET ?", user, (error, results) => {
+      if (error) {
+        console.error("Error storing user in the database:", error);
+        res.status(500).json({ error: "Failed to store user" });
+      } else {
+        res.json({ message: "User stored successfully" });
+      }
+    });
+    res.redirect("/login");
+  } catch {
+    res.redirect("/register");
+  }
+  // console.log(user);
+});
+
+//GET all users
+app.get("/api/users", (req, res) => {
+  pool.query("SELECT * FROM users", (error, results) => {
+    if (error) {
+      console.error("Error retrieving data from the database:", error);
+      res.status(500).json({ error: "Failed to retrieve data" });
+    } else {
+      const userData = results.map((user) => {
+        return {
+          id: user.id,
+          username: user.username,
+          password: user.password,
+        };
+      });
+      console.log(userData);
+      res.json(userData);
+    }
+  });
+});
 
 //GET: retrieve data from pixelations table to show, edit, delete, and download data
 app.get("/api/pixelations", (req, res) => {
@@ -129,8 +259,8 @@ app.post("/api", async (req, res) => {
 });
 
 //All other GET requests not handled before will return React frontend
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../", "index.html"));
+app.get("*", checkAuthenticated, (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../views", "index.ejs"));
 });
 
 app.listen(PORT, () => {
