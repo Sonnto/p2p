@@ -81,7 +81,27 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/", checkAuthenticated, (req, res) => {
-  res.render("../views/index.ejs", { loggedIn: req.session.loggedIn });
+  pool.query("SELECT * FROM pixelations", (error, results) => {
+    if (error) {
+      console.error("Error retrieving data from the database:", error);
+      res.status(500).json({ error: "Failed to retrieve data" });
+    } else {
+      const processedResults = results.map((item) => {
+        // Convert images to base64 or any other format as needed
+        return {
+          id: item.id,
+          original_image: item.original_image,
+          pixelated_image: item.pixelated_image,
+          instructions: item.instructions,
+          segment: item.segment,
+        };
+      });
+      res.render("../views/index.ejs", {
+        loggedIn: req.session.loggedIn,
+        data: processedResults,
+      });
+    }
+  });
 });
 
 app.get("/login", (req, res) => {
@@ -175,6 +195,22 @@ app.get("/api/users", (req, res) => {
       });
       console.log(userData);
       res.json(userData);
+    }
+  });
+});
+
+// DELETE: delete a pixelation record based on the ID
+app.delete("/api/pixelations/:id", (req, res) => {
+  const id = req.params.id;
+  pool.query("DELETE FROM pixelations WHERE id = ?", id, (error, results) => {
+    if (error) {
+      console.error(
+        "Error deleting the pixelation data from the database:",
+        error
+      );
+      res.status(500).json({ error: "Failed to delete pixelation data" });
+    } else {
+      res.json({ message: "Pixelation data deleted successfully" });
     }
   });
 });
