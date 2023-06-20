@@ -30,6 +30,7 @@ const pool = mysql.createPool({
 // Handle connection events
 pool.on("connect", () => {
   console.log("Connected to the database");
+  createDefaultUser(); // Call createDefaultUser function here
 });
 
 pool.on("error", (err) => {
@@ -56,11 +57,25 @@ app.use(
   })
 );
 
-// app.use(passport.initialize)();
-// app.use(passport.session());
+//Creates a default user when server initialized
+const createDefaultUser = () => {
+  const username = "Adam";
+  const password = "admin";
+  const hashedPassword = bcrypt.hashSync(password, 10);
 
-// Middleware function to check if the user is authenticated
-// let isAuthenticated = false;
+  const user = {
+    username: username,
+    password: hashedPassword,
+  };
+
+  pool.query("INSERT INTO users SET ?", user, (error, results) => {
+    if (error) {
+      console.error("Error creating default user:", error);
+    } else {
+      console.log("Default user created successfully");
+    }
+  });
+};
 
 function checkAuthenticated(req, res, next) {
   if (req.session.authenticated) {
@@ -230,7 +245,7 @@ app.get("/api/pixelations", (req, res) => {
 });
 
 // DELETE: delete a pixelation record based on the ID
-app.post("/api/pixelations/:id", (req, res) => {
+app.post("/api/pixelations/delete/:id", (req, res) => {
   const id = req.params.id;
   pool.query("DELETE FROM pixelations WHERE id = ?", id, (error, results) => {
     if (error) {
