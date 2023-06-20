@@ -185,7 +185,7 @@ const Pixelate = () => {
         </button>
 
         {convertedData && (
-          <div>
+          <div id="result">
             <h3>Pixelated Image:</h3>
             <img src={convertedData.pixelatedImage} alt="pixelated" />
           </div>

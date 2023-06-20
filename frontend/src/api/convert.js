@@ -94,21 +94,25 @@ const pixelateImage = async (imageDataUrl, blockSize) => {
       context.putImageData(imageData, 0, 0); // Put the modified pixel data back onto the canvas
 
       // Log the results for each block color
-      // console.log("Block colors:")
       let instructions = "";
+      let blockCount = 0;
       Object.entries(blockColors).forEach(([colorKey, count]) => {
         const [r, g, b] = colorKey.split("_").map(Number);
-        // console.log(`RGB(${r}, ${g}, ${b}): ${count} blocks`);
-        instructions += `RGB(${r}, ${g}, ${b}): ${count} blocks ${totalBlocks}/\n`;
+        instructions += `RGB(${r}, ${g}, ${b}): ${count} blocks\n`;
+        blockCount++;
+
+        // Add a page break after every 10 blocks
+        if (blockCount % 10 === 0) {
+          instructions += "/\n";
+        }
       });
-      // console.log(`Total amount of blocks required: ${totalBlocks}`);
 
       const result = {
         pixelatedImage: canvas.toDataURL("image/jpeg"),
-        instructions,
+        instructions: instructions,
       };
 
-      resolve(result); // Resolve the promise with result object
+      resolve(result); // Resolve the promise with the result object
     };
 
     image.onerror = () => {
