@@ -76,6 +76,28 @@ const createDefaultUser = () => {
   });
 };
 
+const noAccountSituation = () => {
+  const zeroUsers = pool.query("SELECT * FROM users", (error, results) => {
+    if (error) {
+      console.error("Error retrieving data from the database:", error);
+      res.status(500).json({ error: "Failed to retrieve data" });
+    } else {
+      const userData = results.map((user) => {
+        return {
+          id: user.id,
+          username: user.username,
+          password: user.password,
+        };
+      });
+      if (userData.length <= 3) {
+        createDefaultUser();
+      }
+    }
+  });
+};
+
+noAccountSituation();
+
 function checkAuthenticated(req, res, next) {
   if (req.session.authenticated) {
     return next();
