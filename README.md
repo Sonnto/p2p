@@ -9,6 +9,7 @@ This project is part of an on-going, larger project known as [BrickMMO](https://
 - React.js
 - JavaScript
 - CropperJs
+- Database: MySQL
 
 # Instructions
 
