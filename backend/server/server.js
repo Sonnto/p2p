@@ -36,7 +36,12 @@ app.use(cors());
 //Node serve files for React frontend
 app.use(express.json());
 
+//view engine set-up
 app.set("view-engine", "ejs");
+app.use(express.static(path.join(__dirname, 'public'))); //static assets in the public folder
+app.use(express.static(path.join(__dirname, 'public/stylesheets')));
+
+
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
 app.use(
