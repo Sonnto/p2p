@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixelate Backend</title>
+    <link rel="stylesheet" type="text/css" href="../public/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Pixelate Backend</h1>
+      <h2>Register a New User</h2>
+      <nav id="navbar">
+        <ul>
+          <li class="nav-item">
+            <h3><a href="/">Home</a></h3>
+          </li>
+          <% if (loggedIn) { %>
+          <li class="nav-item">
+            <h3><a href="/logout">Logout</a></h3>
+          </li>
+          <li class="nav-item">
+            <h3><a href="/register">Register New User</a></h3>
+          </li>
+          <% } else { %>
+          <li class="nav-item">
+            <h3><a href="/login">Login</a></h3>
+          </li>
+          <% } %>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <!-- Placeholder for the content of other EJS files -->
+      <%= content %>
+    </main>
+    <footer>
+      <!-- Footer -->
+    </footer>
+  </body>
+</html>
