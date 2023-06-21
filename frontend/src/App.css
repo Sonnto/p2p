@@ -360,6 +360,8 @@ p {
 
 /*  ** --------- MOBILE STYLES  ------------- ** */
 @media only screen and (max-width: 767px) {
+
+  /* NAVIGATION BAR BURGER STYLES  */
   .navbar {
     display: none;
     position: absolute;
@@ -453,6 +455,16 @@ p {
   .navbar.active li {
     display: block;
     margin-bottom: 10px;
+  }
+
+  /* FOOTER  */
+  #powerBy {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .brickmmo-logo {
+    margin-top: 10px;
   }
 }
 
