@@ -8,6 +8,7 @@ This project is part of an on-going, larger project known as [BrickMMO](https://
 - Express.js
 - React.js
 - JavaScript
+- CropperJs
 
 # Instructions
 
@@ -41,7 +42,7 @@ Run commands
 2. `npm i express mysql`
 3. Include `  "devStart": "nodemon server/server.js" ` under package.json scripts
 4. Create an .env file with the SERVER_HOST, SERVER_PORT, APP_PORT, SERVER_DB, SERVER_USER, and SERVER_PASSWORD, and SESSION_SECRET
-5. `npm start` 
+6. `npm start` 
 
 ## What to do?
 
