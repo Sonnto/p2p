@@ -149,7 +149,6 @@ p {
   background-color: white;
 }
 
-
 .error-message {
   color: red;
 }
@@ -358,6 +357,107 @@ p {
   height: 40vmin;
   pointer-events: none;
 }
+
+/*  ** --------- MOBILE STYLES  ------------- ** */
+@media only screen and (max-width: 767px) {
+  .navbar {
+    display: none;
+    position: absolute;
+    top: 128px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .menu-toggle .hamburger,
+  .menu-toggle .close {
+    background-color: #333;
+    height: 3px;
+    width: 25px;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  .menu-toggle .hamburger:before,
+  .menu-toggle .hamburger:after,
+  .menu-toggle .close:before,
+  .menu-toggle .close:after {
+    content: "";
+    display: block;
+    position: absolute;
+    background-color: #333;
+    height: 3px;
+    width: 25px;
+    transition: all 0.2s ease;
+  }
+
+  .menu-toggle .hamburger:before,
+  .menu-toggle .hamburger:after {
+    top: -8px;
+  }
+
+  .menu-toggle .close:before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle .close:after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
+ .hamburger:after,
+  .menu-toggle  {
+    content: "";
+    display: block;
+    position: absolute;
+    background-color: #333;
+    height: 5px;
+    width: 25px;
+    transition: all 0.2s ease;
+  }
+
+  /* Animation keyframes for hamburger and close icons */
+  .menu-toggle.active .hamburger:before,
+  .menu-toggle.active .hamburger:after {
+    transition-delay: 0.2s;
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle.active .close:before {
+    transition-delay: 0.2s;
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
+  .menu-toggle.active .close:after {
+    transition-delay: 0.2s;
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .navbar.active {
+    display: block;
+  }
+
+  .navbar.active li {
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+
+
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
