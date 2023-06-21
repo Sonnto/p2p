@@ -69,9 +69,9 @@ const createDefaultUser = () => {
   //creates the users and inserts into a user table
   pool.query("INSERT INTO users SET ?", user, (error, results) => {
     if (error) {
-      console.error("Error creating default user:", error);
+      console.error("Error creating default Adam user:", error);
     } else {
-      console.log("Default user created successfully");
+      console.log("Default Adam user created successfully");
     }
   });
 };
