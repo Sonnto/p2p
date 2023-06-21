@@ -187,7 +187,7 @@ const Pixelate = () => {
         {convertedData && (
           <div id="result">
             <h3>Pixelated Image:</h3>
-            <img src={convertedData.pixelatedImage} alt="pixelated" />
+            <img src={convertedData.pixelatedImage} alt="pixelated"/>
           </div>
         )}
 
@@ -197,7 +197,7 @@ const Pixelate = () => {
             download="instructions.pdf"
             className="download-button"
           >
-            Download Instructions
+            <i class="fa-solid fa-download"></i> Download PDF Instructions
           </a>
         )}
 

@@ -150,7 +150,6 @@ p {
 }
 
 
-
 .error-message {
   color: red;
 }
@@ -204,6 +203,21 @@ p {
 
 
 /* 5. MAIN - Download */
+
+#result {
+  padding-top: 2em;
+}
+
+.pixelated-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pixelated-image-container img {
+  max-width: 60%;
+}
 
 .download-button {
   background-color: #1E92FD;
