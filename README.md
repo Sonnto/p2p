@@ -48,6 +48,7 @@ Run commands
 Select an image and upload the image. Hit "Pixelate" and the user will be presented with a downloadable pixelated image, instructions in PDF to build it, and the amount of LEGO bricks needed along with the corresponding colours.
 
 # Future Developments
+- Implement Backend Design to EJS/CSS : https://github.com/beartisan/pixelate-backend.git
 - Users can create an account in the future
 - Improve on app design and styling
 - instructions.pdf includes pixelated image, + more pages
