@@ -76,7 +76,7 @@ const createDefaultUser = () => {
   });
 };
 
-const noAccountSituation = () => {
+const theAdamAccount = () => {
   pool.query("SELECT * FROM users", (error, results) => {
     if (error) {
       console.error("Error retrieving data from the database:", error);
@@ -97,7 +97,7 @@ const noAccountSituation = () => {
   });
 };
 //Creates an account where there is none (or under a certain threshold of accounts);
-noAccountSituation();
+theAdamAccount();
 
 function checkAuthenticated(req, res, next) {
   if (req.session.authenticated) {
