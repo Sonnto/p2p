@@ -48,4 +48,14 @@ Run commands
 Select an image and upload the image. Hit "Pixelate" and the user will be presented with a downloadable pixelated image, instructions in PDF to build it, and the amount of LEGO bricks needed along with the corresponding colours.
 
 # Future Developments
-- N/A
+- Users can create an account in the future
+- Improve on app design and styling
+- instructions.pdf includes pixelated image, + more pages
+- Mobile responsive application 
+- Incorporate Colors API for “closest LEGO colour”
+- Segment API endpoint for Radio to fetch segment inspos
+- Store and Pixelate larger sized images
+- Find more efficient way of storing images
+- Administrator(s) should be able to edit current accounts
+- Pixelated image should output image with LEGO-bricks instead of square pixels
+
