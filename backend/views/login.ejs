@@ -8,23 +8,25 @@
     <link rel="stylesheet" type="text/css" href="../public/styles.css" />
   </head>
   <body>
-    <header>
+    <header id="header">
       <h1>Pixelate Backend</h1>
       <h2>Login</h2>
-      <nav>
+      <nav id="navbar">
         <ul>
-          <li>
+          <li class="nav-item">
             <h3><a href="/">Home</a></h3>
           </li>
-          <% if (loggedIn) { %>
-          <li>
+
+          <li class="nav-item"><% if (loggedIn) { %></li>
+
+          <li class="nav-item">
             <h3><a href="/logout">Logout</a></h3>
           </li>
-          <li>
+          <li class="nav-item">
             <h3><a href="/register">Register New User</a></h3>
           </li>
           <% } else { %>
-          <li>
+          <li class="nav-item">
             <h3><a href="/login">Login</a></h3>
           </li>
           <% } %>
