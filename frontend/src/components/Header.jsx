@@ -13,36 +13,29 @@ export default function Header() {
         <a href="/">Pixelate</a>
       </h2>
       <nav>
-        <div className={`menu-toggle ${showMenu ? "active" : ""}`} onClick={toggleMenu}>
-          <div className="hamburger"></div>
-          <div className="close"></div>
-        </div>
-
-        {showMenu && (
-          <ul id="navbar" className="navbar active">
-            <li className="nav-item">
-              <a href="#sec-about">About BRICKMMO</a>
-            </li>
-            <li className="nav-item">
-              <a href="#sec-purchase">Buy LEGO</a>
-            </li>
-            <li className="nav-item">
-              <a href="#sec-socmed">
-                <i className="fa-brands fa-twitter"></i>{" "}
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="#sec-socmed">
-                <i className="fa-brands fa-instagram"></i>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a href="#sec-socmed">
-                <i className="fa-brands fa-tiktok"></i>
-              </a>
-            </li>
-          </ul>
-        )}
+        <ul id="navbar">
+          <li className="nav-item">
+            <a href="#sec-about">About BRICKMMO</a>
+          </li>
+          <li className="nav-item">
+            <a href="#sec-purchase">Buy LEGO</a>
+          </li>
+          <li className="nav-item">
+            <a href="#sec-socmed">
+              <i className="fa-brands fa-twitter"></i>{" "}
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="#sec-socmed">
+              <i className="fa-brands fa-instagram"></i>
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="#sec-socmed">
+              <i className="fa-brands fa-tiktok"></i>
+            </a>
+          </li>
+        </ul>
       </nav>
     </header>
   );
