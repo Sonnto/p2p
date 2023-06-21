@@ -18,7 +18,9 @@ export default function Header() {
             <a href="#sec-about">About BRICKMMO</a>
           </li>
           <li className="nav-item">
-            <a href="#sec-purchase">Buy LEGO</a>
+            <a href="https://www.lego.com/en-ca/pick-and-build/pick-a-brick">
+              Buy LEGO
+            </a>
           </li>
           <li className="nav-item">
             <a href="#sec-socmed">
