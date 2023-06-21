@@ -1,12 +1,4 @@
-import React, { useState } from "react";
-
 export default function Header() {
-  const [showMenu, setShowMenu] = useState(false);
-
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
-
   return (
     <header id="header">
       <h2 id="site-name">
