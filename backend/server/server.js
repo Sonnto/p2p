@@ -59,7 +59,7 @@ app.use(
 //Creates a default user when server initialized
 const createDefaultUser = () => {
   const username = "Adam";
-  const password = "admin";
+  const password = "password";
   const hashedPassword = bcrypt.hashSync(password, 10);
 
   const user = {
@@ -77,7 +77,7 @@ const createDefaultUser = () => {
 };
 
 const noAccountSituation = () => {
-  const zeroUsers = pool.query("SELECT * FROM users", (error, results) => {
+  pool.query("SELECT * FROM users", (error, results) => {
     if (error) {
       console.error("Error retrieving data from the database:", error);
       res.status(500).json({ error: "Failed to retrieve data" });
@@ -89,13 +89,14 @@ const noAccountSituation = () => {
           password: user.password,
         };
       });
-      if (userData.length <= 3) {
+      console.log(userData);
+      if (userData.length <= 0) {
         createDefaultUser();
       }
     }
   });
 };
-
+//Creates an account where there is none (or under a certain threshold of accounts);
 noAccountSituation();
 
 function checkAuthenticated(req, res, next) {
