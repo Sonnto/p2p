@@ -178,7 +178,9 @@ const Pixelate = () => {
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        <button onClick={handlePixelate} className="pixelate-button"
+        <button
+          onClick={handlePixelate}
+          className="pixelate-button"
           //className="p-2 text-xs md:text-sm bg-gradient-to-b from-orange-200 to-orange-400 border border-orange-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 active:from-orange-500 text-white"
         >
           Pixelate!
@@ -187,7 +189,7 @@ const Pixelate = () => {
         {convertedData && (
           <div id="result">
             <h3>Pixelated Image:</h3>
-            <img src={convertedData.pixelatedImage} alt="pixelated"/>
+            <img src={convertedData.pixelatedImage} alt="pixelated" />
           </div>
         )}
 
