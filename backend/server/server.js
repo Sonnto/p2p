@@ -39,9 +39,13 @@ app.use(express.json());
 app.engine("ejs", ejsMate);
 app.set("view-engine", "ejs");
 app.set("views", path.join(__dirname, "../views"));
+
 // Configure the default layout
 app.locals.layout = "layout";
+
+//Allows CSS to be accessed
 app.use("/public", express.static("public"));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
 app.use(
