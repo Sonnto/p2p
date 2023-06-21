@@ -29,6 +29,20 @@ Run commands
 
 3. `yarn run dev`
 
+## When you are in the p2p
+### Frontend
+1. `cd frontend`
+2. `npm i`
+3. Include ` "dev": "nodemon ./index.js" ` under package.json scripts
+4. `npm start`
+   
+### Backend
+1. `cd backend`
+2. `npm i express mysql`
+3. Include `  "devStart": "nodemon server/server.js" ` under package.json scripts
+4. Create an .env file with the SERVER_HOST, SERVER_PORT, APP_PORT, SERVER_DB, SERVER_USER, and SERVER_PASSWORD, and SESSION_SECRET
+5. `npm start` 
+
 ## What to do?
 
 Select an image and upload the image. Hit "Pixelate" and the user will be presented with a downloadable pixelated image, instructions in PDF to build it, and the amount of LEGO bricks needed along with the corresponding colours.
