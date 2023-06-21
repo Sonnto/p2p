@@ -11,11 +11,11 @@ const session = require("express-session");
 
 //Manage pool of database connections
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: process.env.SERVER_HOST,
+  port: process.env.SERVER_PORT,
+  user: process.env.SERVER_USER,
+  password: process.env.SERVER_PASSWORD,
+  database: process.env.SERVER_DB_NAME,
 });
 
 // Handle connection events, create a default user on database initialization
@@ -28,7 +28,7 @@ pool.on("error", (err) => {
   console.error("Error connecting to the database:", err);
 });
 
-const PORT = process.env.SERVER_PORT || 1225;
+const PORT = process.env.APP_PORT || 1225;
 
 const app = express();
 
