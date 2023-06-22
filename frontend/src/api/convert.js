@@ -1,4 +1,3 @@
-
 const pixelateImage = async (imageDataUrl, blockSize) => {
   return new Promise((resolve, reject) => {
     const image = new Image(); // Create a new HTML image element
@@ -94,7 +93,6 @@ const pixelateImage = async (imageDataUrl, blockSize) => {
       );
       context.putImageData(imageData, 0, 0); // Put the modified pixel data back onto the canvas
 
-
       // Log the results for each block color
       let instructions = "";
       let blockCount = 0;
@@ -125,6 +123,4 @@ const pixelateImage = async (imageDataUrl, blockSize) => {
   });
 };
 
-module.exports = {
-  pixelateImage
-};
+export { pixelateImage };
