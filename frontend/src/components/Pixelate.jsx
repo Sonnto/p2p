@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { pixelateImage } from "../api/convert";
+import { pixelateImage } from "../api/convert.js";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
