@@ -29,7 +29,7 @@ pool.on("error", (err) => {
   console.error("Error connecting to the database:", err);
 });
 
-const PORT = process.env.APP_PORT || 1225;
+const PORT = process.env.PORT || 1225;
 
 const app = express();
 
