@@ -4,7 +4,11 @@
   "description": "Project P2P (Picture-to-Pixels); the in-development prototype of BrickMMO's Pixelate",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd frontend && yarn build && cd build && yarn start"
+  },
+  "engines": {
+    "node": "^20.2.0"
   },
   "author": "Kee-Fung Anthony Ho",
   "license": "ISC",
